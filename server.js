@@ -4,7 +4,7 @@ import axios from 'axios'
 import * as cheerio from 'cheerio';
 const app = express();
 
-//ViteExpress.config({ mode: "production" })
+ViteExpress.config({ mode: "production" })
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
