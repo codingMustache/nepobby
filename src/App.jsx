@@ -1,33 +1,71 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import axios from 'axios'
+import { TextField, Button, Snackbar, Alert } from '@mui/material'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [name, setName] = useState('')
+  const [checkedName, setCheckedName] = useState('')
+  const [notNepo, setNotNepo] = useState(false)
+  const [nepo, setNepo] = useState(false)
+
+  const handleSubmit = () => {
+    axios.get('/check', { params: { name } })
+      .then(({ data }) => {
+        setCheckedName(name)
+        setName('')
+
+        if (data) {
+          setNepo(data)
+          setTimeout(() => setNepo(false), 3000)
+        } else {
+          setNotNepo(true)
+          setTimeout(() => setNotNepo(false), 3000)
+        }
+      })
+      .catch(() => {
+        setNotNepo(true)
+        setTimeout(() => setNotNepo(false), 3000)
+      })
+  }
+
+  const handleKeyPress = (e) => {
+    if (event.key == 'Enter') {
+      handleSubmit()
+    }
+  }
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='title'>
+        <h1>NepoBby</h1>
+        <p>Check to see if your favorite celiberty worked to get there or Mommy and Daddy got them there.</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className='input-field'>
+        <TextField
+          onChange={e => setName(e.target.value)}
+          id="outlined-basic"
+          label="Celebrity Name"
+          variant="outlined"
+          value={name}
+          onKeyDown={handleKeyPress}
+        />
+        <Button
+          onClick={handleSubmit}
+          variant="contained" color="success"
+        >Submit</Button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+      <Snackbar open={nepo} autoHideDuration={3000} >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          Yeah {checkedName} a product of Nepotism!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={notNepo} autoHideDuration={3000} >
+        <Alert severity="error" sx={{ width: '100%' }}>
+          I couldn't find anything but that doesn't mean they aren't!
+        </Alert>
+      </Snackbar>
+    </div >
   )
 }
 
