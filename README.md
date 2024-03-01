@@ -13,5 +13,5 @@ Clone Down
 2. Run locally
 `npm run dev`
 
-The app is a frontend sveltekit component and a single backend compoenent. If you have contribution to the project feel free to fork and make a PR. 
+The app is a frontend Next.js component and a single backend compoenent. If you have contribution to the project feel free to fork and make a PR. 
 Questions about the codebase you can email me at nepobby@codingMustache.dev
